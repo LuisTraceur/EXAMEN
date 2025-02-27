@@ -1,0 +1,33 @@
+const int sensorPin = 9; // Pin de señal del sensor ultrasónico
+const int ledPin = 7;    // Pin del LED
+
+void setup() {
+    pinMode(sensorPin, OUTPUT);
+    pinMode(ledPin, OUTPUT);
+    Serial.begin(9600); // Iniciar comunicación serie
+}
+
+void loop() {
+    pinMode(sensorPin, OUTPUT);
+    digitalWrite(sensorPin, LOW);
+    delayMicroseconds(2);
+    digitalWrite(sensorPin, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(sensorPin, LOW);
+
+    pinMode(sensorPin, INPUT);
+    long duration = pulseIn(sensorPin, HIGH);
+    float distance = duration * 0.034 / 2;
+
+    Serial.print("Distancia: ");
+    Serial.print(distance);
+    Serial.println(" cm");
+
+    if (distance <= 10.0) {
+        digitalWrite(ledPin, HIGH); // Enciende el LED si está a 10 cm o menos
+    } else {
+        digitalWrite(ledPin, LOW); // Apaga el LED si está más lejos
+    }
+
+    delay(500);
+}
